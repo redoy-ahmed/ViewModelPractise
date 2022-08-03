@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">ViewModelPractise</string>
+    <string name="user_list_screen_label">User List</string>
+    <string name="new_user_screen_label">New User</string>
+    <string name="user_name">User Name</string>
+    <string name="mobile_number">Mobile Number</string>
+    <string name="add_user">Add User</string>
+</resources>
