@@ -30,5 +30,11 @@ public class NewUserActivity extends AppCompatActivity {
                 .observe(this, result -> {
                     finish();
                 });
+
+        mViewModel
+                .getToastObserver()
+                .observe(this, message -> {
+                    Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+                });
     }
 }

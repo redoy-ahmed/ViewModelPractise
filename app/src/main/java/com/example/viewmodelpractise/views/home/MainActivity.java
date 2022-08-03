@@ -1,7 +1,6 @@
 package com.example.viewmodelpractise.views.home;
 
 import android.os.Bundle;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
@@ -41,12 +40,6 @@ public class MainActivity extends AppCompatActivity {
                     .observe(this, userList -> {
                         recyclerViewAdapter = new UserRecyclerViewAdapter(this, userList);
                         binding.setAdapter(recyclerViewAdapter);
-                    });
-
-            mViewModel
-                    .getToastObserver()
-                    .observe(this, message -> {
-                        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
                     });
 
             return binding.getRoot();
