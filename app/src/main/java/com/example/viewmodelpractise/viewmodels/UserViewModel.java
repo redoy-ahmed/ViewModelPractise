@@ -1,9 +1,7 @@
 package com.example.viewmodelpractise.viewmodels;
 
 import android.app.Application;
-import android.content.Intent;
 import android.text.TextUtils;
-import android.view.View;
 
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
@@ -11,21 +9,25 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.viewmodelpractise.db.DatabaseCallRepository;
 import com.example.viewmodelpractise.models.User;
-import com.example.viewmodelpractise.views.newUser.NewUserActivity;
+import com.example.viewmodelpractise.utils.SingleLiveEvent;
 
 import java.util.List;
 
 public class UserViewModel extends AndroidViewModel {
 
     private final DatabaseCallRepository dbRepository;
-    private final MutableLiveData<String> toastMessageObserver;
-    private final MutableLiveData<Boolean> finishActivityObserver;
+    private final SingleLiveEvent<String> toastMessageObserver;
+    private final SingleLiveEvent<Boolean> openNewUserScreenObserver;
+    private final SingleLiveEvent<Boolean> finishActivityObserver;
+    private final SingleLiveEvent<User> selectedUser;
     private LiveData<List<User>> userList;
 
     public UserViewModel(Application application) {
         super(application);
-        toastMessageObserver = new MutableLiveData<>();
-        finishActivityObserver = new MutableLiveData<>();
+        toastMessageObserver = new SingleLiveEvent<>();
+        openNewUserScreenObserver = new SingleLiveEvent<>();
+        finishActivityObserver = new SingleLiveEvent<>();
+        selectedUser = new SingleLiveEvent<>();
         dbRepository = new DatabaseCallRepository(application);
     }
 
@@ -37,16 +39,30 @@ public class UserViewModel extends AndroidViewModel {
         return userList;
     }
 
-    public MutableLiveData<String> getToastObserver() {
+    public SingleLiveEvent<User> getSelectedUser() {
+        return selectedUser;
+    }
+
+    public SingleLiveEvent<Boolean> getOpenNewUserScreenObserver() {
+        return openNewUserScreenObserver;
+    }
+
+    public SingleLiveEvent<String> getToastObserver() {
         return toastMessageObserver;
     }
 
-    public MutableLiveData<Boolean> getFinishActivityObserver() {
+    public SingleLiveEvent<Boolean> getFinishActivityObserver() {
         return finishActivityObserver;
     }
 
-    public void startNewUserScreen(View view) {
-        view.getContext().startActivity(new Intent(view.getContext(), NewUserActivity.class));
+    public void openNewUserScreen() {
+        selectedUser.setValue(new User());
+        openNewUserScreenObserver.setValue(true);
+    }
+
+    public void openNewUserScreen(User user) {
+        selectedUser.setValue(user);
+        openNewUserScreenObserver.setValue(true);
     }
 
     public void saveUser(User user) {
